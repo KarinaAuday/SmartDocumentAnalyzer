@@ -1,0 +1,70 @@
+## .NET / Visual Studio
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+.nuget/
+
+# User secrets (NEVER commit API keys)
+secrets.json
+appsettings.Development.json
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+*.trx
+*.coverage
+*.coveragexml
+
+# Publish
+publish/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

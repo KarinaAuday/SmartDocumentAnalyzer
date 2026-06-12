@@ -1,0 +1,6 @@
+@SmartDocumentAnalyzer_HostAddress = http://localhost:5276
+
+GET {{SmartDocumentAnalyzer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
