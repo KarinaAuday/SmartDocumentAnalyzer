@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using SmartDocumentAnalyzer.Exceptions;
 using SmartDocumentAnalyzer.Services;
 
@@ -65,6 +66,7 @@ app.UseExceptionHandler(errApp =>
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

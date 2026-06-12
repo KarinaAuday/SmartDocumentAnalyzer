@@ -33,32 +33,33 @@ public class ClaudeAnalysisService : IAIAnalysisService
     {
         _logger.LogInformation("Sending document to Claude for analysis ({Length} chars)", documentText.Length);
 
-        var prompt = $"""
+        var prompt = $$"""
             Analyze the following document and respond ONLY with a valid JSON object.
             Do not include markdown, code fences, or any text outside the JSON.
 
             Use exactly this structure:
-            {{
+            {
               "summary": "A concise 2-3 sentence summary of the document",
               "keyPoints": ["Key insight 1", "Key insight 2", "Key insight 3"],
               "sentiment": "positive|neutral|negative"
-            }}
+            }
 
             Document:
-            {documentText}
+            {{documentText}}
             """;
 
         try
         {
             var parameters = new MessageParameters
             {
-                Model = AnthropicModels.Claude3Sonnet,
+                Model = "claude-3-5-haiku-20241022",
                 MaxTokens = 1024,
-                Messages = [new Message { Role = RoleType.User, Content = prompt }]
+                Messages = [new Message(RoleType.User, prompt)]
             };
 
             var response = await _client.Messages.GetClaudeMessageAsync(parameters);
-            var rawJson = response.Content[0].Text;
+            var rawJson = response.FirstMessage?.Text
+                ?? throw new AnalysisException("Claude returned an empty response.");
 
             _logger.LogDebug("Claude raw response: {Response}", rawJson);
 
@@ -66,7 +67,7 @@ public class ClaudeAnalysisService : IAIAnalysisService
                 rawJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            return result ?? throw new AnalysisException("Claude returned an empty response.");
+            return result ?? throw new AnalysisException("Claude returned a response that could not be parsed.");
         }
         catch (JsonException ex)
         {
