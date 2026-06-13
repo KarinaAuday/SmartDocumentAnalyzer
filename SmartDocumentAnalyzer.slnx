@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="SmartDocumentAnalyzer.Tests/SmartDocumentAnalyzer.Tests.csproj" />
   <Project Path="SmartDocumentAnalyzer/SmartDocumentAnalyzer.csproj" />
 </Solution>

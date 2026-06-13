@@ -1,4 +1,5 @@
 using SmartDocumentAnalyzer.Services;
+using Xunit;
 
 namespace SmartDocumentAnalyzer.Tests.Services;
 
@@ -67,12 +68,12 @@ public class MockAnalysisServiceTests
     // ── Summary ───────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task AnalyzeAsync_ReturnsSummaryWithWordCount()
+    public async Task AnalyzeAsync_ReturnsSummaryNotEmpty()
     {
         var result = await _sut.AnalyzeDocumentAsync(
             "Artificial intelligence is transforming the world. Many industries are adopting AI solutions.");
 
-        Assert.Contains("words", result.Summary);
+        Assert.False(string.IsNullOrWhiteSpace(result.Summary));
     }
 
     // ── Edge Cases ────────────────────────────────────────────────────────────

@@ -6,6 +6,7 @@ using SmartDocumentAnalyzer.Controllers;
 using SmartDocumentAnalyzer.Exceptions;
 using SmartDocumentAnalyzer.Models;
 using SmartDocumentAnalyzer.Services;
+using Xunit;
 
 namespace SmartDocumentAnalyzer.Tests.Controllers;
 
