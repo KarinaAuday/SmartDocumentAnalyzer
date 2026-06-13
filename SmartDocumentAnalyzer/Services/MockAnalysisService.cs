@@ -71,9 +71,33 @@ public class MockAnalysisService : IAIAnalysisService
 
     private static string BuildSummary(List<string> sentences, int totalWords)
     {
-        var first = sentences.FirstOrDefault() ?? "No sentences detected.";
-        return $"{first}. [Analyzed {totalWords} words across {sentences.Count} sentence(s). " +
-               $"Note: this is a local analysis — enable AI mode for richer summaries.]";
+        if (sentences.Count == 0)
+            return "No sentences detected.";
+
+        // Score each sentence by density of meaningful words (extractive summarization)
+        var wordFreq = sentences
+            .SelectMany(s => s.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+            .Select(w => w.Trim('.', ',', '!', '?', ';', ':', '"', '\'').ToLower())
+            .Where(w => w.Length > 3 && !StopWords.Contains(w) && w.All(char.IsLetter))
+            .GroupBy(w => w)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        var scored = sentences
+            .Select((s, i) => new
+            {
+                Sentence = s,
+                Index = i,
+                Score = s.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                         .Select(w => w.Trim('.', ',', '!', '?', ';', ':', '"', '\'').ToLower())
+                         .Sum(w => wordFreq.TryGetValue(w, out var freq) ? freq : 0)
+            })
+            .OrderByDescending(x => x.Score)
+            .Take(2)
+            .OrderBy(x => x.Index) // restore original order
+            .ToList();
+
+        var summary = string.Join(" ", scored.Select(x => x.Sentence.Trim()));
+        return summary;
     }
 
     private static List<string> ExtractKeyPoints(List<string> words)
